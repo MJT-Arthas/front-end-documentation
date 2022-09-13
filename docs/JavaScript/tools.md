@@ -75,3 +75,69 @@ function throttle(func, wait, options = {}) {
   return throttled;
 }
 ```
+
+## 获取url参数
+
+* URLSearchParams
+
+```
+    const params = new URLSearchParams("q=devpoint&page=1"); //window.location.search
+    params.get("q"); // 'devpoint'
+    params.get("page"); // '1'
+
+    const params = new URLSearchParams("q=devpoint&page=1");
+    const entries = params.entries();
+    Object.fromEntries(entries); // {q: 'devpoint', page: '1'}
+
+```
+
+* URLSearchParams
+
+```
+    const url = new URL("https://stackabuse.com/search?q=devpoint&page=1");
+    const searchParams = url.searchParams;
+    searchParams.get("q"); // 'devpoint'
+    searchParams.get("page"); // '1'
+
+    url.href; // 'https://stackabuse.com/search?q=devpoint&page=1'
+    url.origin; // 'https://stackabuse.com'
+    url.protocol; // 'https:'
+    url.host; // 'stackabuse.com'
+    url.hostname; // 'stackabuse.com'
+    url.port; // ''
+    url.pathname; // '/search'
+    url.search; // '?q=devpoint&page=2'
+    url.hash; // ''
+
+```
+
+* 纯JS
+
+```
+    function getQueryParams(url) {
+        const paramArr = url.slice(url.indexOf("?") + 1).split("&");
+        const params = {};
+        paramArr.map((param) => {
+            const [key, val] = param.split("=");
+            params[key] = decodeURIComponent(val);
+        });
+        return params;
+    }
+```
+
+## 对象转url参数
+
+```
+    getParams(params) {
+      let paramStr = "";
+      Object.keys(params).forEach((item) => {
+        if (paramStr === "") {
+          paramStr = `${item}=${params[item]}`;
+        } else {
+          paramStr = `${paramStr}&${item}=${params[item]}`;
+        }
+      });
+
+      return paramStr;
+    }
+```
